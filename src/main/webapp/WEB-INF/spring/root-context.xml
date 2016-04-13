@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	
+	
+	<bean id="dataSource"
+class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+<property name="url" value="jdbc:mysql://localhost:3306/test" />
+<property name="username" value="root" />
+</bean>
+<bean id="sf"
+class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+<property name="dataSource">
+<ref bean="dataSource"/>
+</property>
+<property name="hibernateProperties">
+<props>
+<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+<prop key="hibernate.show_sql">true</prop>
+<prop key="hibernate.hbm2ddl.auto">update</prop>
+</props>
+</property>
+
+<property name="annotatedClasses">
+<list>
+<value>com.shiva.model.User</value>
+<value>com.shiva.model.Education</value>
+</list>
+
+</property>
+
+</bean>
+
+ <bean id="educationdao" class="com.shiva.model.EducationDao">
+<property name="sessionFactory" ref="sf" />
+</bean>
+<bean id="eduservice" class="com.shiva.model.EducationService">
+<property name="edudao" ref="educationdao"></property>
+</bean>
+
+<context:component-scan base-package="com.shiva.model"></context:component-scan>
+<tx:annotation-driven />
+<bean id="transactionManager"
+class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+<property name="sessionFactory" ref="sf" />
+</bean>
+	
+	
+		
+</beans>
