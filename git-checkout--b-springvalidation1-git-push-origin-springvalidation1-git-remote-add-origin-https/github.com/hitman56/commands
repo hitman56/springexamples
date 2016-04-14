@@ -1,0 +1,5 @@
+git checkout -b springvalidation1
+
+git push origin springvalidation1
+
+ git remote add origin https://github.com/hitman56/springexamples.git
